@@ -8,17 +8,17 @@ export function prepareActiveEffectCategories(effects) {
   const categories = {
     temporary: {
       type: 'temporary',
-      label: game.i18n.localize('BOILERPLATE.Effect.Temporary'),
+      label: game.i18n.localize('EXTRICATE.Effect.Temporary'),
       effects: [],
     },
     passive: {
       type: 'passive',
-      label: game.i18n.localize('BOILERPLATE.Effect.Passive'),
+      label: game.i18n.localize('EXTRICATE.Effect.Passive'),
       effects: [],
     },
     inactive: {
       type: 'inactive',
-      label: game.i18n.localize('BOILERPLATE.Effect.Inactive'),
+      label: game.i18n.localize('EXTRICATE.Effect.Inactive'),
       effects: [],
     },
   };

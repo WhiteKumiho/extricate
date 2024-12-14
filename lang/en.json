@@ -1,36 +1,54 @@
 {
-  "BOILERPLATE": {
+  "EXTRICATE": {
     "Ability": {
-      "Str": { "long": "Strength", "abbr": "str" },
-      "Con": { "long": "Constitution", "abbr": "con" },
-      "Dex": { "long": "Dexterity", "abbr": "dex" },
-      "Int": { "long": "Intelligence", "abbr": "int" },
-      "Wis": { "long": "Wisdom", "abbr": "wis" },
-      "Cha": { "long": "Charisma", "abbr": "cha" }
+      "MET": { "long": "Mettle", "abbr": "MET" },
+      "AGI": { "long": "Agility", "abbr": "AGI" },
+      "INT": { "long": "Intellect", "abbr": "INT" },
+      "WIT": { "long": "Wit", "abbr": "WIT" },
+      "Wis": { "long": "Wisdom", "abbr": "wis" }
     },
+	"Skill": {
+		"Mel": { "long": "Melee", "abbr": "mel" },
+		"Ath": { "long": "Athletics", "abbr": "ath" },
+		"End": { "long": "Endurance", "abbr": "end" },
+		"Cha": { "long": "Charisma", "abbr": "cha" },
+		"Rng": { "long": "Ranged", "abbr": "rng" },
+		"Dft": { "long": "Deftness", "abbr": "dft" },
+		"Spd": { "long": "Speed", "abbr": "spd" },
+		"Rfx": { "long": "Reflexes", "abbr": "rfx" },
+		"Arc": { "long": "Arcana", "abbr": "arc" },
+		"Ins": { "long": "Insight", "abbr": "ins" },
+		"Sci": { "long": "Science", "abbr": "sci" },
+		"Ntr": { "long": "Nature", "abbr": "ntr" },
+		"Soc": { "long": "Social", "abbr": "soc" },
+		"Awr": { "long": "Awareness", "abbr": "awr" },
+		"Cun": { "long": "Cunning", "abbr": "cun" },
+		"Tnk": { "long": "Tinker", "abbr": "tnk" }
+	},
     "SheetLabels": {
-      "Actor": "Boilerplate Actor Sheet",
-      "Item": "Boilerplate Item Sheet"
+      "Actor": "Extricate Actor Sheet",
+      "Item": "Extricate Item Sheet"
     },
     "Actor": {
       "Tabs": {
-        "Biography": "Biography",
         "Features": "Features",
         "Gear": "Gear",
         "Spells": "Spells",
-        "Effects": "Effects"
+		"Biography": "Biography",
+        "Effects": "Effects",
+		"Lewd": "Lewd"
       },
       "base": {
         "FIELDS": {
-          "biography": {"label": "Biography"},
           "health": {
             "value": {"label": "Health"},
             "max": {"label": "Maximum Health"}
           },
-          "power": {
-            "value": {"label": "Power"},
-            "max": {"label": "Maximum Power"}
-          }
+          "barrier": {
+            "value": {"label": "Barrier"},
+            "max": {"label": "Maximum Barrier"}
+          },
+		  "biography": {"label": "Biography"}
         }
       },
       "Character": {

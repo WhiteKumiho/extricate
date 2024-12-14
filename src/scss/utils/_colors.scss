@@ -1,29 +1,29 @@
 :root {
-  --boilerplate-c-dark: #191813;
-  --boilerplate-c-faint: #c9c7b8;
-  --boilerplate-c-beige: #b5b3a4;
-  --boilerplate-c-tan: #444444;
-  --boilerplate-c-white: #ffffff;
-  --boilerplate-c-black: #000000;
-  --boilerplate-c-groove: #eeede0;
+  --extricate-c-dark: #191813;
+  --extricate-c-faint: #c9c7b8;
+  --extricate-c-beige: #b5b3a4;
+  --extricate-c-tan: #444444;
+  --extricate-c-white: #ffffff;
+  --extricate-c-black: #000000;
+  --extricate-c-groove: #eeede0;
 }
 
 .theme-dark {
-  --boilerplate-c-dark: #c9c7b8;
-  --boilerplate-c-faint: #191813;
-  --boilerplate-c-beige: #444444;
-  --boilerplate-c-tan: #b5b3a4;
-  --boilerplate-c-white: #000000;
-  --boilerplate-c-black: #ffffff;
-  --boilerplate-c-groove: #11121f;
+  --extricate-c-dark: #c9c7b8;
+  --extricate-c-faint: #191813;
+  --extricate-c-beige: #444444;
+  --extricate-c-tan: #b5b3a4;
+  --extricate-c-white: #000000;
+  --extricate-c-black: #ffffff;
+  --extricate-c-groove: #11121f;
 }
 
-$c-white: var(--boilerplate-c-white);
-$c-black: var(--boilerplate-c-black);
+$c-white: var(--extricate-c-white);
+$c-black: var(--extricate-c-black);
 
-$c-dark: var(--boilerplate-c-dark);
-$c-faint: var(--boilerplate-c-faint);
-$c-beige: var(--boilerplate-c-beige);
-$c-tan: var(--boilerplate-c-tan);
+$c-dark: var(--extricate-c-dark);
+$c-faint: var(--extricate-c-faint);
+$c-beige: var(--extricate-c-beige);
+$c-tan: var(--extricate-c-tan);
 
-$c-groove: var(--boilerplate-c-groove);
+$c-groove: var(--extricate-c-groove);

@@ -9,41 +9,107 @@
           "min": 0,
           "max": 10
         },
-        "power": {
-          "value": 5,
+        "barrier": {
+          "value": 0,
           "min": 0,
           "max": 5
         },
-        "biography": ""
+		"lewd": {
+			"value": 0,
+			"min": 0,
+			"max": 22
+		},
+        "biography": "",
+		"height": "",
+		"weight": "",
+		"age": ""
       }
     },
     "character": {
       "templates": ["base"],
+
       "attributes": {
         "level": {
           "value": 1
         }
       },
       "abilities": {
-        "str": {
-          "value": 10
+        "mettle": {
+          "value": 12
         },
-        "dex": {
-          "value": 10
+        "agility": {
+          "value": 14
         },
-        "con": {
-          "value": 10
+        "intellect": {
+          "value": 15
         },
-        "int": {
-          "value": 10
-        },
-        "wis": {
-          "value": 10
+        "wit": {
+          "value": 16
         },
         "cha": {
-          "value": 10
+          "value": 19
         }
-      }
+      },
+	  "skills": {
+		"mettle": {
+			"melee": {
+				"value": 0
+			},
+			"athletics": {
+				"value": 0
+			},
+			"endurance": {
+				"value": 0
+			},
+			"charisma": {
+				"value": 0
+			}
+		},
+		"agility": {
+			"ranged": {
+				"value": 0
+			},
+			"deftness": {
+				"value": 0
+			},
+			"speed": {
+				"value": 0
+			},
+			"reflexes": {
+				"value": 0
+			}
+		},
+		"intellect": {
+			"arcana": {
+				"value": 0
+			},
+			"insight": {
+				"value": 0
+			},
+			"science": {
+				"value": 0
+			},
+			"nature": {
+				"value": 0
+			}
+		},
+		"wit": {
+			"social": {
+				"value": 0
+			},
+			"awareness": {
+				"value": 0
+			},
+			"cunning": {
+				"value": 0
+			},
+			"tinker": {
+				"value": 0
+			}
+		}
+	  },
+	  "selectedSkill": [],
+	  "bonus": ""
     },
     "npc": {
       "templates": ["base"],
@@ -67,6 +133,16 @@
     "feature": {
       "templates": ["base"]
     },
+	"race": {
+		"templates": ["base"],
+		"size": "large",
+		"health": 24,
+		"mettle": 4,
+		"agility": 4,
+		"intellect": 4,
+		"wit": 4,
+		"quirks": ""
+	},
     "spell": {
       "templates": ["base"],
       "spellLevel": 1

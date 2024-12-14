@@ -18,17 +18,11 @@
         placeholder='Name'
       />
     </div>
-    {{! The grid classes are defined in scss/global/_grid.scss. To use,
-      use both the "grid" and "grid-Ncol" class where "N" can be any number
-      from 1 to 12 and will create that number of columns.  }}
-    <div class='resources grid grid-3col'>
 
-      {{! "flex-group-center" is also defined in the _grid.scss file
-        and it will add a small amount of padding, a border, and will
-        center all of its child elements content and text. }}
+    <div class='resources grid grid-4col'>
       <div class='resource flex-group-center'>
         <label for='system.health.value' class='resource-label'>
-          {{localize 'BOILERPLATE.Actor.base.FIELDS.health.value.label'}}
+          {{localize 'EXTRICATE.Actor.base.FIELDS.health.value.label'}}
         </label>
         <div class='resource-content flexrow flex-center flex-between'>
           <input
@@ -48,21 +42,21 @@
       </div>
 
       <div class='resource flex-group-center'>
-        <label for='system.power.value' class='resource-label'>
-          {{localize 'BOILERPLATE.Actor.base.FIELDS.power.value.label'}}
+        <label for='system.barrier.value' class='resource-label'>
+          {{localize 'EXTRICATE.Actor.base.FIELDS.barrier.value.label'}}
         </label>
         <div class='resource-content flexrow flex-center flex-between'>
           <input
             type='text'
-            name='system.power.value'
-            value='{{system.power.value}}'
+            name='system.barrier.value'
+            value='{{system.barrier.value}}'
             data-dtype='Number'
           />
           <span> / </span>
           <input
             type='text'
-            name='system.power.max'
-            value='{{system.power.max}}'
+            name='system.barrier.max'
+            value='{{system.barrier.max}}'
             data-dtype='Number'
           />
         </div>
@@ -71,7 +65,7 @@
       <div class='resource flex-group-center'>
         {{#if (eq actor.type 'character')}}
           <label class='resource-label'>
-            {{localize 'BOILERPLATE.Actor.Character.FIELDS.attributes.level.value.label'}}
+            {{localize 'EXTRICATE.Actor.Character.FIELDS.attributes.level.value.label'}}
           </label>
           <div class='resource-content flexrow flex-center flex-between'>
             <input
@@ -84,7 +78,7 @@
         {{/if}}
         {{#if (eq actor.type 'npc')}}
           <label class='resource-label'>
-            {{localize 'BOILERPLATE.Actor.NPC.FIELDS.cr.label'}} / {{localize 'BOILERPLATE.Actor.NPC.xp.label'}}
+            {{localize 'EXTRICATE.Actor.NPC.FIELDS.cr.label'}} / {{localize 'EXTRICATE.Actor.NPC.xp.label'}}
           </label>
           <div class='resource-content flexrow flex-center flex-between'>
             <input

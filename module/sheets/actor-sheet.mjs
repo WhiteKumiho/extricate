@@ -6,7 +6,7 @@ const { api, sheets } = foundry.applications;
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheetV2}
  */
-export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
+export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
   sheets.ActorSheetV2
 ) {
   constructor(options = {}) {
@@ -16,10 +16,10 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
 
   /** @override */
   static DEFAULT_OPTIONS = {
-    classes: ['boilerplate', 'actor'],
+    classes: ['extricate', 'actor'],
     position: {
       width: 600,
-      height: 600,
+      height: 700,
     },
     actions: {
       onEditImage: this._onEditImage,
@@ -28,6 +28,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
       deleteDoc: this._deleteDoc,
       toggleEffect: this._toggleEffect,
       roll: this._onRoll,
+	  skillSelect: this._skillSelect,
     },
     // Custom property that's merged into `this.options`
     dragDrop: [{ dragSelector: '[data-drag]', dropSelector: null }],
@@ -39,45 +40,56 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
   /** @override */
   static PARTS = {
     header: {
-      template: 'systems/boilerplate/templates/actor/header.hbs',
+		//path to the html template for this sheet
+      template: 'systems/extricate/templates/actor/header.hbs',
     },
     tabs: {
       // Foundry-provided generic template
       template: 'templates/generic/tab-navigation.hbs',
     },
     features: {
-      template: 'systems/boilerplate/templates/actor/features.hbs',
+      template: 'systems/extricate/templates/actor/features.hbs',
     },
     biography: {
-      template: 'systems/boilerplate/templates/actor/biography.hbs',
+      template: 'systems/extricate/templates/actor/biography.hbs',
     },
     gear: {
-      template: 'systems/boilerplate/templates/actor/gear.hbs',
+      template: 'systems/extricate/templates/actor/gear.hbs',
     },
     spells: {
-      template: 'systems/boilerplate/templates/actor/spells.hbs',
+      template: 'systems/extricate/templates/actor/spells.hbs',
     },
     effects: {
-      template: 'systems/boilerplate/templates/actor/effects.hbs',
+      template: 'systems/extricate/templates/actor/effects.hbs',
     },
+	lewd: {
+	  template: 'systems/extricate/templates/actor/lewd.hbs'
+	}
   };
 
   /** @override */
   _configureRenderOptions(options) {
     super._configureRenderOptions(options);
     // Not all parts always render
-    options.parts = ['header', 'tabs', 'biography'];
+    options.parts = ['header', 'tabs'];
     // Don't show the other tabs if only limited view
-    if (this.document.limited) return;
+    if (this.document.limited) {
+		options.parts.push('biography');
+		return
+	}
     // Control which parts show based on document subtype
     switch (this.document.type) {
       case 'character':
-        options.parts.push('features', 'gear', 'spells', 'effects');
+        options.parts.push('features', 'lewd', 'gear', 'spells', 'biography', 'effects');
         break;
       case 'npc':
         options.parts.push('gear', 'effects');
         break;
     }
+
+
+
+
   }
 
   /* -------------------------------------------- */
@@ -95,9 +107,12 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
       // Add the actor's data to context.data for easier access, as well as flags.
       system: this.actor.system,
       flags: this.actor.flags,
-      // Adding a pointer to CONFIG.BOILERPLATE
-      config: CONFIG.BOILERPLATE,
+      // Adding a pointer to CONFIG.EXTRICATE
+      config: CONFIG.EXTRICATE,
       tabs: this._getTabs(options.parts),
+      // Necessary for formInput and formFields helpers
+      fields: this.document.schema.fields,
+      systemFields: this.document.system.schema.fields,
     };
 
     // Offloading context prep to a helper function
@@ -111,6 +126,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
     switch (partId) {
       case 'features':
       case 'spells':
+	  case 'lewd': 
       case 'gear':
         context.tab = context.tabs[partId];
         break;
@@ -143,6 +159,9 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
     return context;
   }
 
+
+
+
   /**
    * Generates the data for the generic tab navigation template
    * @param {string[]} parts An array of named template parts to render
@@ -153,7 +172,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
     // If you have sub-tabs this is necessary to change
     const tabGroup = 'primary';
     // Default tab for first time it's rendered this session
-    if (!this.tabGroups[tabGroup]) this.tabGroups[tabGroup] = 'biography';
+    if (!this.tabGroups[tabGroup]) this.tabGroups[tabGroup] = 'features';
     return parts.reduce((tabs, partId) => {
       const tab = {
         cssClass: '',
@@ -163,16 +182,12 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
         // FontAwesome Icon, if you so choose
         icon: '',
         // Run through localization
-        label: 'BOILERPLATE.Actor.Tabs.',
+        label: 'EXTRICATE.Actor.Tabs.',
       };
       switch (partId) {
         case 'header':
         case 'tabs':
           return tabs;
-        case 'biography':
-          tab.id = 'biography';
-          tab.label += 'Biography';
-          break;
         case 'features':
           tab.id = 'features';
           tab.label += 'Features';
@@ -185,10 +200,17 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
           tab.id = 'spells';
           tab.label += 'Spells';
           break;
+		case 'biography':
+		  tab.id = 'biography';
+		  tab.label += 'Biography';
+		  break;
         case 'effects':
           tab.id = 'effects';
           tab.label += 'Effects';
           break;
+		case 'lewd':
+		  tab.id = 'lewd';
+		  tab.label = 'Lewd';
       }
       if (this.tabGroups[tabGroup] === tab.id) tab.cssClass = 'active';
       tabs[partId] = tab;
@@ -260,6 +282,24 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
   _onRender(context, options) {
     this.#dragDrop.forEach((d) => d.bind(this.element));
     this.#disableOverrides();
+
+	//render skill buttons already selected
+	let selectedSkill = this.actor.system.selectedSkill
+	let skillLabel = document.getElementById(selectedSkill[0])
+	if (selectedSkill.length < 1) {
+		return
+	} else if (selectedSkill.length === 1) {
+		let skillLabel1 = document.getElementById(selectedSkill[0])
+		skillLabel1.classList.toggle('skill-btn-pressed')
+	} else if (selectedSkill.length === 2) {
+		let skillLabel1 = document.getElementById(selectedSkill[0])
+		let skillLabel2 = document.getElementById(selectedSkill[1])
+		skillLabel1.classList.toggle('skill-btn-pressed')
+		skillLabel2.classList.toggle('skill-btn-pressed')
+	} else {
+		selectedSkill.length = 0
+	}
+
     // You may want to add other special handling here
     // Foundry comes with a large number of utility classes, e.g. SearchFilter
     // That you may want to implement yourself.
@@ -274,7 +314,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handle changing a Document's image.
    *
-   * @this BoilerplateActorSheet
+   * @this ExtricateActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @returns {Promise}
@@ -302,7 +342,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Renders an embedded document's sheet
    *
-   * @this BoilerplateActorSheet
+   * @this ExtricateActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -315,7 +355,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handles item deletion
    *
-   * @this BoilerplateActorSheet
+   * @this ExtricateActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -328,7 +368,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handle creating a new Owned Item or ActiveEffect for the actor using initial data defined in the HTML dataset
    *
-   * @this BoilerplateActorSheet
+   * @this ExtricateActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @private
@@ -361,7 +401,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Determines effect parent to pass to helper
    *
-   * @this BoilerplateActorSheet
+   * @this ExtricateActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @private
@@ -374,7 +414,7 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
   /**
    * Handle clickable rolls.
    *
-   * @this BoilerplateActorSheet
+   * @this ExtricateActorSheet
    * @param {PointerEvent} event   The originating click event
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
@@ -391,6 +431,42 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
     }
 
     // Handle rolls that supply the formula directly.
+	//the roll constructor needs the roll formula and some data object from which to retrieve any variable found in the roll formula
+	//refactor this. change skillButtons to skills? 
+	//then change skill1/2 to skills and use skills[0] and skills[1]
+	switch (dataset.rollType) {
+		case 'skill':
+			let skillButtons = this.actor.system.selectedSkill
+
+			if (skillButtons.length < 2) {
+				ui.notifications.error("two skills must be selected")
+				return
+			}
+
+			let skill1 = this.actor.system.selectedSkill[0]
+			let skill2 = this.actor.system.selectedSkill[1]
+			let mod = this.actor.system.bonus.value
+			let label = `${skill1} + ${skill2}`
+			let rollFormula = `1d20 + @${skill1}.value + @${skill2}.value + @${mod}.value`
+			let roll = new Roll(rollFormula, this.actor.getRollData())
+
+			await roll.toMessage({
+				speaker: ChatMessage.getSpeaker({ actor: this.actor}),
+				flavor: label,
+				rollMode: game.settings.get('core', 'rollMode')
+			})
+
+			if (event.shiftKey === false) {
+				let skillLabel1 = document.getElementById(skill1)
+				let skillLabel2 = document.getElementById(skill2)
+				skillLabel1.classList.toggle('skill-btn-pressed')
+				skillLabel2.classList.toggle('skill-btn-pressed')
+				skillButtons.length = 0
+			}
+
+			return roll
+	}
+
     if (dataset.roll) {
       let label = dataset.label ? `[ability] ${dataset.label}` : '';
       let roll = new Roll(dataset.roll, this.actor.getRollData());
@@ -401,7 +477,38 @@ export class BoilerplateActorSheet extends api.HandlebarsApplicationMixin(
       });
       return roll;
     }
+
+	
   }
+
+  //should be called by html buttons in features.hbs associated with a skill.
+  //determines which 2 buttons are pressed for calculating the skill roll.
+  static async _skillSelect(event, target) {
+	const skillButtons = this.actor.system.selectedSkill 
+	const dataset = target.dataset
+	let label = dataset.label
+	let skillLabelElement = ''
+	let unpress = ''
+
+	if (target.id === skillButtons[0] || target.id === skillButtons[1]) {
+		//unpress becomes the skill that is removed from skillButtons
+		unpress = (target.id === skillButtons[0]) ? skillButtons.shift():skillButtons.pop()
+		console.log("unpress value:", unpress)
+		skillLabelElement = document.getElementById(unpress)
+		skillLabelElement.classList.toggle('skill-btn-pressed')
+	} else if (skillButtons.length < 2) { 
+		skillButtons.push(target.id)
+		target.classList.toggle('skill-btn-pressed')
+		return
+	} else {
+		target.classList.toggle('skill-btn-pressed')
+		unpress = skillButtons.shift()
+		skillLabelElement = document.getElementById(unpress)
+		skillLabelElement.classList.toggle('skill-btn-pressed')
+		skillButtons.push(target.id)
+	}
+  }
+
 
   /** Helper Functions */
 
