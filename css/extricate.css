@@ -537,7 +537,7 @@
   min-width: 5.1rem;
 }
 
-.skill-btn-pressed {
+.skill-btn:active {
   background: rgba(105, 82, 116, 0.616);
 }
 
@@ -563,6 +563,38 @@
 .item-box {
   overflow: scroll;
   height: 150px;
+}
+
+.red-color {
+  background: rgba(194, 50, 50, 0.616);
+}
+
+.red-color.active {
+  background: rgba(247, 179, 179, 0.616);
+}
+
+.blue-color {
+  background: rgba(67, 95, 177, 0.616);
+}
+
+.blue-color.active {
+  background: rgba(119, 142, 212, 0.616);
+}
+
+.green-color {
+  background: rgba(64, 133, 84, 0.616);
+}
+
+.green-color.active {
+  background: rgba(143, 247, 173, 0.616);
+}
+
+.yellow-color {
+  background: rgba(238, 196, 7, 0.616);
+}
+
+.yellow-color.active {
+  background: rgba(255, 239, 95, 0.616);
 }
 
 /*# sourceMappingURL=extricate.css.map */

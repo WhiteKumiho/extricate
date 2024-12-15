@@ -459,8 +459,8 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 			if (event.shiftKey === false) {
 				let skillLabel1 = document.getElementById(skill1)
 				let skillLabel2 = document.getElementById(skill2)
-				skillLabel1.classList.toggle('skill-btn-pressed')
-				skillLabel2.classList.toggle('skill-btn-pressed')
+				skillLabel1.classList.toggle('active')
+				skillLabel2.classList.toggle('active')
 				skillButtons.length = 0
 			}
 
@@ -495,16 +495,16 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 		unpress = (target.id === skillButtons[0]) ? skillButtons.shift():skillButtons.pop()
 		console.log("unpress value:", unpress)
 		skillLabelElement = document.getElementById(unpress)
-		skillLabelElement.classList.toggle('skill-btn-pressed')
+		skillLabelElement.classList.toggle('active')
 	} else if (skillButtons.length < 2) { 
 		skillButtons.push(target.id)
-		target.classList.toggle('skill-btn-pressed')
+		target.classList.toggle('active')
 		return
 	} else {
-		target.classList.toggle('skill-btn-pressed')
+		target.classList.toggle('active')
 		unpress = skillButtons.shift()
 		skillLabelElement = document.getElementById(unpress)
-		skillLabelElement.classList.toggle('skill-btn-pressed')
+		skillLabelElement.classList.toggle('active')
 		skillButtons.push(target.id)
 	}
   }
