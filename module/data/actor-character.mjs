@@ -33,17 +33,20 @@ export default class ExtricateCharacter extends ExtricateActorBase {
     );
 
 	schema.metSkills = new fields.SchemaField( 
-	  Object.keys(CONFIG.EXTRICATE.skills.mettle).reduce((obj, skill) => {
-		obj[skill] = new fields.SchemaField({
-		  value: new fields.NumberField({
-			...requiredInteger,
-			initial: 1,
-			min: 0,
-		  }),
-		});
-		return obj;
-	  }, {})
-	);
+	  	Object.keys(CONFIG.EXTRICATE.skills.mettle).reduce((obj, skill) => {
+		  obj[skill] = new fields.SchemaField({
+		    value: new fields.NumberField({
+			  ...requiredInteger,
+			  initial: 1,
+			  min: 0,
+		    }),
+		    label: new fields.StringField({
+			  initial: skill,
+		    }),
+		  });
+		  return obj;
+	    }, {})
+	  );
 	
 	schema.agiSkills = new fields.SchemaField( 
 		Object.keys(CONFIG.EXTRICATE.skills.agility).reduce((obj, skill) => {
@@ -52,6 +55,9 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 			  ...requiredInteger,
 			  initial: 0,
 			  min: 0,
+			}),
+			label: new fields.StringField({
+			  initial: skill,
 			}),
 		  });
 		  return obj;
@@ -66,6 +72,9 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 			  initial: 0,
 			  min: 0,
 			}),
+			label: new fields.StringField({
+			  initial: skill,
+			}),
 		  });
 		  return obj;
 		}, {})
@@ -79,7 +88,11 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 			  initial: 0,
 			  min: 0,
 			}),
+			label: new fields.StringField({
+			  initial: skill,
+			}),
 		  });
+		  
 		  return obj;
 		}, {})
 	  );    

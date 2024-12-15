@@ -445,8 +445,13 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 
 			let skill1 = this.actor.system.selectedSkill[0]
 			let skill2 = this.actor.system.selectedSkill[1]
+			let skillLabel1 = document.getElementById(skill1)
+			let skillLabel2 = document.getElementById(skill2)
+			let skillName1 = skillLabel1.getAttribute("data-label")
+			let skillName2 = skillLabel2.getAttribute("data-label")
 			let mod = this.actor.system.bonus.value
-			let label = `${skill1} + ${skill2}`
+
+			let label = `${skillName1} + ${skillName2}`
 			let rollFormula = `1d20 + @${skill1}.value + @${skill2}.value + @${mod}.value`
 			let roll = new Roll(rollFormula, this.actor.getRollData())
 
@@ -457,8 +462,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 			})
 
 			if (event.shiftKey === false) {
-				let skillLabel1 = document.getElementById(skill1)
-				let skillLabel2 = document.getElementById(skill2)
+
 				skillLabel1.classList.toggle('active')
 				skillLabel2.classList.toggle('active')
 				skillButtons.length = 0
