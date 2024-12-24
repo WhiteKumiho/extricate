@@ -8,8 +8,6 @@
 <div class="features-header">
 	<div class="ability-box">
         {{#each system.abilities as |ability key|}}
-		{{log "ability key:" key}}
-		{{log "ability ability:" ability}}
         <div class='ability flexrow flex-group-center'>
             <label
               class='resource-label rollable flexlarge align-left'
@@ -105,8 +103,6 @@
       <div class='abilities flexcol'> 
 	  <div class='skills grid-2col'>
 		{{#each system.metSkills as |skill key|}} 
-		{{log "skill skill:" skill}}
-		{{log "skill key:" key}}
           <div class='skills flexcol flex-group-center'>
             <input
               type='text'
@@ -116,9 +112,13 @@
               data-dtype='Number'
             />
 			<label
-              class='resource-label rollable align-center skill-btn red-color'
+              class='resource-label rollable align-center skill-btn red-color
+			  {{#each ../system.selectedSkill}}
+				{{#if (eq  this key)}}active{{/if}}
+			  {{/each}}
+			  '
               data-action='skillSelect'
-			  id="metSkills.{{key}}"
+			  id="{{key}}"
 {{!--               data-roll='d20+@skills.{{key}}.value' --}}
 			  data-roll-type='skill'
               data-label='{{localize (lookup @root.config.skills.mettle key)}}'
@@ -135,9 +135,13 @@
               data-dtype='Number'
             />
 			<label
-              class='resource-label rollable flexlarge align-left skill-btn green-color'
+              class='resource-label rollable flexlarge align-left skill-btn green-color
+			  {{#each ../system.selectedSkill}}
+				{{#if (eq  this key)}}active{{/if}}
+			  {{/each}}
+			  '
 			  data-action='skillSelect'
-			  id="agiSkills.{{key}}"
+			  id="{{key}}"
 			  data-label='{{localize (lookup @root.config.skills.agility key)}}'
             >{{localize (lookup @root.config.skills.agility key)}}</label>
           </div>
@@ -162,9 +166,13 @@
               data-dtype='Number'
             />
 			<label
-              class='resource-label rollable flexlarge align-left skill-btn blue-color'
+              class='resource-label rollable flexlarge align-left skill-btn blue-color
+			  {{#each ../system.selectedSkill}}
+				{{#if (eq  this key)}}active{{/if}}
+			  {{/each}}
+			  '
 			  data-action='skillSelect'
-			  id="intSkills.{{key}}"
+			  id="{{key}}"
 			  data-label='{{localize (lookup @root.config.skills.intellect key)}}'
             >{{localize (lookup @root.config.skills.intellect key)}}</label>
           </div>
@@ -179,9 +187,13 @@
               data-dtype='Number'
             />
 			<label
-              class='resource-label rollable flexlarge align-left skill-btn yellow-color'
+              class='resource-label rollable flexlarge align-left skill-btn yellow-color //right now im using bash scripts to assign global identities
+			  {{#each ../system.selectedSkill}}
+				{{#if (eq  this key)}}active{{/if}}
+			  {{/each}}
+			  '
 			  data-action='skillSelect'
-			  id="witSkills.{{key}}"
+			  id="{{key}}"
 			  data-label='{{localize (lookup @root.config.skills.wit key)}}'
             >{{localize (lookup @root.config.skills.wit key)}}</label>
           </div>

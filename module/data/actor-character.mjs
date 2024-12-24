@@ -20,7 +20,6 @@ export default class ExtricateCharacter extends ExtricateActorBase {
     // Iterate over ability names and create a new SchemaField for each.
     schema.abilities = new fields.SchemaField(
       Object.keys(CONFIG.EXTRICATE.abilities).reduce((obj, ability) => {
-		console.log(ability)
         obj[ability] = new fields.SchemaField({
           value: new fields.NumberField({
             ...requiredInteger,
@@ -33,6 +32,7 @@ export default class ExtricateCharacter extends ExtricateActorBase {
     );
 
 	schema.metSkills = new fields.SchemaField( 
+		// Iterate over Mettle skill names in config.mjs and create a new SchemaField for each.
 	  	Object.keys(CONFIG.EXTRICATE.skills.mettle).reduce((obj, skill) => {
 		  obj[skill] = new fields.SchemaField({
 		    value: new fields.NumberField({
@@ -79,7 +79,7 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 		  return obj;
 		}, {})
 	  );  
-	
+
 	schema.witSkills = new fields.SchemaField( 
 		Object.keys(CONFIG.EXTRICATE.skills.wit).reduce((obj, skill) => {
 		  obj[skill] = new fields.SchemaField({
@@ -96,7 +96,7 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 		  return obj;
 		}, {})
 	  );    
-
+	console.log("schemasheet!", this)
     return schema;
   }
 
@@ -116,16 +116,31 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 
   getRollData() {
     const data = {};
+	const skillSets = [this.metSkills, this.agiSkills, this.intSkills, this.witSkills]
 
     // Copy the ability scores to the top level, so that rolls can use
     // formulas like `@str.mod + 4`.
     if (this.abilities) {
       for (let [k, v] of Object.entries(this.abilities)) {
         data[k] = foundry.utils.deepClone(v);
+
       }
     }
 
     data.lvl = this.attributes.level.value;
+
+	// iterate through the array of skill categories.
+	for (let i = 0; i < skillSets.length; i++) {
+		let skillObject = skillSets[i]
+		// iterate through the current skill category skills and 
+		// add them to the top level.
+		if (skillSets) {
+			for (let [key, value] of Object.entries(skillObject)) {
+				data[key] = foundry.utils.deepClone(value)
+			}
+		}
+	}
+	
 
     return data;
   }

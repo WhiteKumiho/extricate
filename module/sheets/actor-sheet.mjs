@@ -30,6 +30,9 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
       roll: this._onRoll,
 	  skillSelect: this._skillSelect,
     },
+	window: {
+		resizable: true
+	},
     // Custom property that's merged into `this.options`
     dragDrop: [{ dragSelector: '[data-drag]', dropSelector: null }],
     form: {
@@ -279,27 +282,41 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
    * @protected
    * @override
    */
+
   _onRender(context, options) {
     this.#dragDrop.forEach((d) => d.bind(this.element));
     this.#disableOverrides();
 
 	//render skill buttons already selected
-	let selectedSkill = this.actor.system.selectedSkill
-	let skillLabel = document.getElementById(selectedSkill[0])
-	if (selectedSkill.length < 1) {
+	//doesn't work
+
+/* 	let selectedSkills = this.actor.system.selectedSkill
+
+	if (selectedSkills.length < 1) {
+		console.log("less than 1")
+		console.log(selectedSkills)
 		return
-	} else if (selectedSkill.length === 1) {
-		let skillLabel1 = document.getElementById(selectedSkill[0])
+	} else if (selectedSkills.length === 1) {
+		console.log("equals 1")
+		console.log(selectedSkills)
+		let skillLabel1Selector = "#" + selectedSkills[0].replace(".", "\\.")
+		let skillLabel1 = this.element.querySelector(skillLabel1Selector)
 		skillLabel1.classList.toggle('skill-btn-pressed')
-	} else if (selectedSkill.length === 2) {
-		let skillLabel1 = document.getElementById(selectedSkill[0])
-		let skillLabel2 = document.getElementById(selectedSkill[1])
+	} else if (selectedSkills.length === 2) {
+		console.log("equals 2")
+		console.log(selectedSkills)
+		let skillLabel1Selector = "#" + selectedSkills[0].replace(".", "\\.")
+		let skillLabel2Selector = "#" + selectedSkills[1].replace(".", "\\.")
+		let skillLabel1 = this.element.querySelector(skillLabel1Selector)
+		let skillLabel2 = this.element.querySelector(skillLabel2Selector)
 		skillLabel1.classList.toggle('skill-btn-pressed')
 		skillLabel2.classList.toggle('skill-btn-pressed')
 	} else {
-		selectedSkill.length = 0
+		console.log("equals neither 1 or 2")
+		console.log(selectedSkills)
+		selectedSkills.length = 0
 	}
-
+ */
     // You may want to add other special handling here
     // Foundry comes with a large number of utility classes, e.g. SearchFilter
     // That you may want to implement yourself.
@@ -386,6 +403,8 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
     };
     // Loop through the dataset and add it to our docData
     for (const [dataKey, value] of Object.entries(target.dataset)) {
+		console.log(target)
+		console.log("Object", Object)
       // These data attributes are reserved for the action handling
       if (['action', 'documentClass'].includes(dataKey)) continue;
       // Nested properties require dot notation in the HTML, e.g. anything with `system`
@@ -393,6 +412,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
       // which turns into the dataKey 'system.spellLevel'
       foundry.utils.setProperty(docData, dataKey, value);
     }
+
 
     // Finally, create the embedded document!
     await docCls.create(docData, { parent: this.actor });
@@ -422,37 +442,42 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
   static async _onRoll(event, target) {
     event.preventDefault();
     const dataset = target.dataset;
+	console.log("early dataset", dataset)
 
     // Handle item rolls.
     switch (dataset.rollType) {
       case 'item':
         const item = this._getEmbeddedDocument(target);
+		let test = target.closest('li[data-document-class]')
         if (item) return item.roll();
     }
 
     // Handle rolls that supply the formula directly.
-	//the roll constructor needs the roll formula and some data object from which to retrieve any variable found in the roll formula
+	//the roll constructor needs the roll formula and some data object from which to 
+	//retrieve any variable found in the roll formula
 	//refactor this. change skillButtons to skills? 
 	//then change skill1/2 to skills and use skills[0] and skills[1]
+
+	//ROLL button
 	switch (dataset.rollType) {
 		case 'skill':
-			let skillButtons = this.actor.system.selectedSkill
+			let skills = this.actor.system.selectedSkill
 
-			if (skillButtons.length < 2) {
+			if (skills.length < 2) {
 				ui.notifications.error("two skills must be selected")
 				return
 			}
 
-			let skill1 = this.actor.system.selectedSkill[0]
-			let skill2 = this.actor.system.selectedSkill[1]
-			let skillLabel1 = document.getElementById(skill1)
-			let skillLabel2 = document.getElementById(skill2)
+			let skillLabel1Selector = "#" + skills[0].replace(".", "\\.")
+			let skillLabel1 = this.element.querySelector(skillLabel1Selector)
+			let skillLabel2Selector =  "#" + skills[1].replace(".", "\\.")
+			let skillLabel2 = this.element.querySelector(skillLabel2Selector)
 			let skillName1 = skillLabel1.getAttribute("data-label")
 			let skillName2 = skillLabel2.getAttribute("data-label")
 			let mod = this.actor.system.bonus.value
 
 			let label = `${skillName1} + ${skillName2}`
-			let rollFormula = `1d20 + @${skill1}.value + @${skill2}.value + @${mod}.value`
+			let rollFormula = `1d20 + @${skills[0]}.value + @${skills[1]}.value + @${mod}.value`
 			let roll = new Roll(rollFormula, this.actor.getRollData())
 
 			await roll.toMessage({
@@ -465,7 +490,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 
 				skillLabel1.classList.toggle('active')
 				skillLabel2.classList.toggle('active')
-				skillButtons.length = 0
+				skills.length = 0
 			}
 
 			return roll
@@ -492,22 +517,27 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 	const dataset = target.dataset
 	let label = dataset.label
 	let skillLabelElement = ''
-	let unpress = ''
+	let unpressId = ''
+	let unpressSelector = ''
+
 
 	if (target.id === skillButtons[0] || target.id === skillButtons[1]) {
 		//unpress becomes the skill that is removed from skillButtons
-		unpress = (target.id === skillButtons[0]) ? skillButtons.shift():skillButtons.pop()
-		console.log("unpress value:", unpress)
-		skillLabelElement = document.getElementById(unpress)
+		unpressId = (target.id === skillButtons[0]) ? skillButtons.shift():skillButtons.pop()
+		//escape "." for querySelector
+		//escape presumably no longer needed
+		unpressSelector = "#" + unpressId.replace(".", "\\.")
+		//find HTML element for this actor sheet
+		skillLabelElement = this.element.querySelector(unpressSelector)
 		skillLabelElement.classList.toggle('active')
 	} else if (skillButtons.length < 2) { 
 		skillButtons.push(target.id)
 		target.classList.toggle('active')
-		return
 	} else {
 		target.classList.toggle('active')
-		unpress = skillButtons.shift()
-		skillLabelElement = document.getElementById(unpress)
+		unpressId = skillButtons.shift()
+		unpressSelector = "#" + unpressId.replace(".", "\\.")
+		skillLabelElement = this.element.querySelector(unpressSelector)
 		skillLabelElement.classList.toggle('active')
 		skillButtons.push(target.id)
 	}
@@ -523,6 +553,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
    * @returns {Item | ActiveEffect} The embedded Item or ActiveEffect
    */
   _getEmbeddedDocument(target) {
+	console.log("getembeddedlog", target)
     const docRow = target.closest('li[data-document-class]');
     if (docRow.dataset.documentClass === 'Item') {
       return this.actor.items.get(docRow.dataset.itemId);

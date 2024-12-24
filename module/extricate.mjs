@@ -32,7 +32,7 @@ globalThis.extricate = {
 
 Hooks.once('init', function () {
   // Add custom constants for configuration.
-  console.log(CONFIG) 
+
   CONFIG.EXTRICATE = EXTRICATE;
 
 
