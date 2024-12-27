@@ -126,6 +126,9 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 
   /** @override */
   async _preparePartContext(partId, context) {
+	console.log("context", context)
+	console.log("partid", partId)
+	
     switch (partId) {
       case 'features':
       case 'spells':
@@ -187,6 +190,8 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
         // Run through localization
         label: 'EXTRICATE.Actor.Tabs.',
       };
+	  console.log(partId)
+	  console.log("tabs", tabs)
       switch (partId) {
         case 'header':
         case 'tabs':
@@ -212,7 +217,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
           tab.label += 'Effects';
           break;
 		case 'lewd':
-		  tab.id = 'lewd';
+		  tab.id = 'lewdtab'; //data-tab value
 		  tab.label = 'Lewd';
       }
       if (this.tabGroups[tabGroup] === tab.id) tab.cssClass = 'active';
@@ -286,6 +291,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
   _onRender(context, options) {
     this.#dragDrop.forEach((d) => d.bind(this.element));
     this.#disableOverrides();
+	console.log("on render context", context)
 
 	//render skill buttons already selected
 	//doesn't work
@@ -474,9 +480,9 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 			let skillLabel2 = this.element.querySelector(skillLabel2Selector)
 			let skillName1 = skillLabel1.getAttribute("data-label")
 			let skillName2 = skillLabel2.getAttribute("data-label")
-			let mod = this.actor.system.bonus.value
-
+			let mod = "bonus"
 			let label = `${skillName1} + ${skillName2}`
+			
 			let rollFormula = `1d20 + @${skills[0]}.value + @${skills[1]}.value + @${mod}.value`
 			let roll = new Roll(rollFormula, this.actor.getRollData())
 
@@ -876,7 +882,15 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
    */
   async _processSubmitData(event, form, submitData) {
     const overrides = foundry.utils.flattenObject(this.actor.overrides);
-    for (let k of Object.keys(overrides)) delete submitData[k];
+	console.log("overrides", this.actor.overrides)
+	console.log("event", event)
+	console.log("Form", form)
+    for (let k of Object.keys(overrides)) {
+		console.log("k", k)
+		delete submitData[k]
+
+	}
+	console.log("overrides", this.actor.overrides)
     await this.document.update(submitData);
   }
 
@@ -885,6 +899,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
    */
   #disableOverrides() {
     const flatOverrides = foundry.utils.flattenObject(this.actor.overrides);
+	console.log("flat overrides", flatOverrides)
     for (const override of Object.keys(flatOverrides)) {
       const input = this.element.querySelector(`[name="${override}"]`);
       if (input) {

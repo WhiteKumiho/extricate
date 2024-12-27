@@ -14,15 +14,16 @@ export default class ExtricateActorBase extends foundry.abstract
         min: 0,
       }),
       max: new fields.NumberField({ ...requiredInteger, initial: 10 }),
-    });
+    })
 	schema.barrier = new fields.SchemaField({
 	  value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0}),
 	  max: new fields.NumberField({ ...requiredInteger, initial: 5 }),
 	})
 	schema.lewd = new fields.SchemaField({
 		value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0}),
-		max: new fields.NumberField({ ...requiredInteger, initial: 20, min: 0})
+		max: new fields.NumberField({ ...requiredInteger, initial: 20}),
 	})
+	console.log(schema.health)
 	schema.bonus = new fields.SchemaField({
 		value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0})
 	})
@@ -31,7 +32,9 @@ export default class ExtricateActorBase extends foundry.abstract
       max: new fields.NumberField({ ...requiredInteger, initial: 5 }),
     }); */
     schema.biography = new fields.HTMLField();
+	console.log("schema", schema)
 
     return schema;
   }
 }
+

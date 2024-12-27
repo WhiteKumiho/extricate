@@ -198,6 +198,17 @@
             >{{localize (lookup @root.config.skills.wit key)}}</label>
           </div>
         {{/each}}
+		<div class='grid-2col resource-label align-left'>
+			Misc. Bonus
+				<input 
+				type='text'
+				name='system.bonus.value'
+				value='{{system.bonus.value}}'
+				class='bonus-value'
+				data-dtype='Number'
+				/>
+		</div>
+
 	</div>
 </div>
   

@@ -30,6 +30,7 @@ export class ExtricateActor extends Actor {
     const flags = actorData.flags.extricate || {};
 
 	const systemData = actorData.system
+	console.log("system data", systemData)
 	systemData.selectedSkill = []
   }
 

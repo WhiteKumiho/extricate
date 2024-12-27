@@ -63,6 +63,28 @@
         </div>
       </div>
 
+	  <div class='resource flex-group-center'>
+        <label for='system.lewd.value' class='resource-label'>
+          {{localize 'EXTRICATE.Actor.base.FIELDS.lewd.value.label'}}
+        </label>
+        <div class='resource-content flexrow flex-center flex-between'>
+			{{log "system" system}}
+          <input
+            type='text'
+            name='system.lewd.value'
+            value='{{system.lewd.value}}'
+            data-dtype='Number'
+          />
+          <span> / </span>
+          <input
+            type='text'
+            name='system.lewd.max'
+            value='{{system.lewd.max}}'
+            data-dtype='Number'
+          />
+        </div>
+      </div>
+
       <div class='resource flex-group-center'>
         {{#if (eq actor.type 'character')}}
           <label class='resource-label'>

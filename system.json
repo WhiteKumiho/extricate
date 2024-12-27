@@ -85,6 +85,5 @@
     "diagonals": 0
   },
   "primaryTokenAttribute": "barrier",
-  "secondaryTokenAttribute": "health",
-  "tertiaryTokenAttribute": "lewd"
+  "secondaryTokenAttribute": "health"
 }

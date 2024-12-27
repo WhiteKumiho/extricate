@@ -48,6 +48,10 @@
             "value": {"label": "Barrier"},
             "max": {"label": "Maximum Barrier"}
           },
+		  "lewd": {
+			"value": {"label": "Lewd"},
+			"max": {"label": "Maximum Lewd"}
+		  },
 		  "biography": {"label": "Biography"}
         }
       },

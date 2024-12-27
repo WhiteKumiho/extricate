@@ -96,9 +96,9 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 		  return obj;
 		}, {})
 	  );    
-	console.log("schemasheet!", this)
     return schema;
   }
+  
 
   prepareDerivedData() {
     // Loop through ability scores, and add their modifiers to our sheet output.
@@ -140,8 +140,6 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 			}
 		}
 	}
-	
-
     return data;
   }
 
