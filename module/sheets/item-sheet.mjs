@@ -72,6 +72,9 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
       case 'feature':
         options.parts.push('attributesFeature', 'effects');
         break;
+	  case 'lewd':
+		options.parts.push('attributesLewd')
+		break
       case 'gear':
         options.parts.push('attributesGear');
         break;
@@ -109,10 +112,12 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
 
   /** @override */
   async _preparePartContext(partId, context) {
+	console.log("partID", partId)
     switch (partId) {
       case 'attributesFeature':
       case 'attributesGear':
       case 'attributesSpell':
+	  case 'attributesLewd':
         // Necessary for preserving active tab on re-render
         context.tab = context.tabs[partId];
         break;
@@ -140,6 +145,9 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
     }
     return context;
   }
+
+
+
 
   /**
    * Generates the data for the generic tab navigation template
@@ -174,6 +182,7 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
         case 'attributesFeature':
         case 'attributesGear':
         case 'attributesSpell':
+		case 'attributesLewd':
           tab.id = 'attributes';
           tab.label += 'Attributes';
           break;
@@ -275,6 +284,7 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
     const aeCls = getDocumentClass('ActiveEffect');
     // Prepare the document creation data by initializing it a default name.
     // As of v12, you can define custom Active Effect subtypes just like Item subtypes if you want
+	console.log("create Effect triggers")
     const effectData = {
       name: aeCls.defaultName({
         // defaultName handles an undefined type gracefully
@@ -318,6 +328,7 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
    * @returns {HTMLLIElement} The document's row
    */
   _getEffect(target) {
+	console.log("getEffect happened")
     const li = target.closest('.effect');
     return this.item.effects.get(li?.dataset?.effectId);
   }

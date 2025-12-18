@@ -1,3 +1,4 @@
+import { ExtricateLewdMove } from '../data/_module.mjs';
 import { prepareActiveEffectCategories } from '../helpers/effects.mjs';
 
 const { api, sheets } = foundry.applications;
@@ -6,12 +7,14 @@ const { api, sheets } = foundry.applications;
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheetV2}
  */
+
 export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
   sheets.ActorSheetV2
 ) {
   constructor(options = {}) {
     super(options);
     this.#dragDrop = this.#createDragDropHandlers();
+	this._selectChangeHandler = null //ai
   }
 
   /** @override */
@@ -166,8 +169,6 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
   }
 
 
-
-
   /**
    * Generates the data for the generic tab navigation template
    * @param {string[]} parts An array of named template parts to render
@@ -218,7 +219,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
           break;
 		case 'lewd':
 		  tab.id = 'lewdtab'; //data-tab value
-		  tab.label = 'Lewd';
+		  tab.label += 'Lewd';
       }
       if (this.tabGroups[tabGroup] === tab.id) tab.cssClass = 'active';
       tabs[partId] = tab;
@@ -238,6 +239,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
     // this sheet does with spells
     const gear = [];
     const features = [];
+	const LewdMove = []
     const spells = {
       0: [],
       1: [],
@@ -267,6 +269,10 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
           spells[i.system.spellLevel].push(i);
         }
       }
+	  // Refactor :standardize LewdMove variable name handling
+	  else if (i.type === 'LewdMove') {
+		LewdMove.push(i)
+	  }
     }
 
     for (const s of Object.values(spells)) {
@@ -277,6 +283,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
     context.gear = gear.sort((a, b) => (a.sort || 0) - (b.sort || 0));
     context.features = features.sort((a, b) => (a.sort || 0) - (b.sort || 0));
     context.spells = spells;
+	context.LewdMove = LewdMove
   }
 
   /**
@@ -291,7 +298,35 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
   _onRender(context, options) {
     this.#dragDrop.forEach((d) => d.bind(this.element));
     this.#disableOverrides();
-	console.log("on render context", context)
+
+
+	//Find out if foundry has something that handles all of this instead.
+	//manually adds event listener upon opening sheet, that handles 
+	//sending data to embedded items
+	super._onRender?.(context, options)
+	const html = this.element
+
+	if(this._selectChangeHandler) html.removeEventListener('change', this._selectChangeHandler)
+	
+	this._selectChangeHandler = async (event) => {
+		console.log("selectchange has triggered")
+		const targetEl = event.target
+		if (!(targetEl instanceof HTMLSelectElement) || !targetEl.matches('select[data-item-id]')) return
+
+		const itemId = targetEl?.dataset?.itemId
+		const value = targetEl?.value
+		const skillNum = targetEl.name
+		console.log('select change', itemId, value, skillNum)
+		if (!itemId) return
+
+		try {
+			await this.actor.updateEmbeddedDocuments("Item", [{ _id: itemId, [skillNum]: value}])
+		} catch (err) {
+			console.error("failed to update embedded item", err)
+		}
+	}
+
+	html.addEventListener('change', this._selectChangeHandler)
 
 	//render skill buttons already selected
 	//doesn't work
@@ -327,6 +362,11 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
     // Foundry comes with a large number of utility classes, e.g. SearchFilter
     // That you may want to implement yourself.
   }
+
+  _onClose(options) {
+
+  }
+
 
   /**************
    *
@@ -409,8 +449,8 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
     };
     // Loop through the dataset and add it to our docData
     for (const [dataKey, value] of Object.entries(target.dataset)) {
-		console.log(target)
-		console.log("Object", Object)
+		console.log("create doc target", target)
+		console.log("Create doc Object", Object)
       // These data attributes are reserved for the action handling
       if (['action', 'documentClass'].includes(dataKey)) continue;
       // Nested properties require dot notation in the HTML, e.g. anything with `system`
@@ -453,8 +493,10 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
     // Handle item rolls.
     switch (dataset.rollType) {
       case 'item':
+		console.log("The item case is activated")
         const item = this._getEmbeddedDocument(target);
 		let test = target.closest('li[data-document-class]')
+		console.log("this is test", test)
         if (item) return item.roll();
     }
 
@@ -526,6 +568,9 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 	let unpressId = ''
 	let unpressSelector = ''
 
+	console.log(target)
+	console.log(this.actor)
+
 
 	if (target.id === skillButtons[0] || target.id === skillButtons[1]) {
 		//unpress becomes the skill that is removed from skillButtons
@@ -571,6 +616,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
       return parent.effects.get(docRow?.dataset.effectId);
     } else return console.warn('Could not find document class');
   }
+
 
   /***************
    *
@@ -882,17 +928,22 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
    */
   async _processSubmitData(event, form, submitData) {
     const overrides = foundry.utils.flattenObject(this.actor.overrides);
+	console.log("this", this)
+	console.log("event target", event.target.dataset.itemId)
 	console.log("overrides", this.actor.overrides)
+	console.log("Actual overrides result", overrides)
 	console.log("event", event)
 	console.log("Form", form)
+	console.log("submitData", submitData)
     for (let k of Object.keys(overrides)) {
-		console.log("k", k)
+		console.log("there's no keys?", k)
 		delete submitData[k]
 
 	}
 	console.log("overrides", this.actor.overrides)
     await this.document.update(submitData);
   }
+
 
   /**
    * Disables inputs subject to active effects

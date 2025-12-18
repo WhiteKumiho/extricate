@@ -36,18 +36,23 @@ export class ExtricateItem extends Item {
    */
   async roll(event) {
     const item = this;
+	console.log("item.mjs this", this)
 
     // Initialize chat data.
     const speaker = ChatMessage.getSpeaker({ actor: this.actor });
     const rollMode = game.settings.get('core', 'rollMode');
     const label = `[${item.type}] ${item.name}`;
+	let label2 = ''
 
     // If there's no roll data, send a chat message.
     if (!this.system.formula) {
+		let test = this.getRollData()
+		console.log("rolldata", test)
+		console.log("this from item.mjs", this.actor)
       ChatMessage.create({
         speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
+        rollMode: "roll mode:" + rollMode,
+        flavor: "Label" + label,
         content: item.system.description ?? '',
       });
     }
@@ -60,10 +65,13 @@ export class ExtricateItem extends Item {
       const roll = new Roll(rollData.formula, rollData.actor);
       // If you need to store the value first, uncomment the next line.
       // const result = await roll.evaluate();
+	  if (this.system.skillRoll.skill1 && this.system.skillRoll.skill2) {
+		label2 = `: ${this.system.skillRoll.skill1}+${this.system.skillRoll.skill2}`
+	  }
       roll.toMessage({
         speaker: speaker,
         rollMode: rollMode,
-        flavor: label,
+        flavor: label + label2,
       });
       return roll;
     }

@@ -60,6 +60,7 @@ Hooks.once('init', function () {
     gear: models.ExtricateGear,
     feature: models.ExtricateFeature,
     spell: models.ExtricateSpell,
+	LewdMove: models.ExtricateLewdMove,
   };
 
   // Active Effects are never copied to the Actor,
@@ -73,6 +74,7 @@ Hooks.once('init', function () {
     makeDefault: true,
     label: 'EXTRICATE.SheetLabels.Actor',
   });
+  console.log("actors registered sheet.")
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('extricate', ExtricateItemSheet, {
     makeDefault: true,

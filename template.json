@@ -33,7 +33,7 @@
           "value": 1
         }
       },
-      "abilities": {
+      "potentials": {
         "mettle": {
           "value": 12
         },
@@ -117,7 +117,7 @@
     }
   },
   "Item": {
-    "types": ["gear", "feature", "spell"],
+    "types": ["gear", "feature", "spell", "LewdMove"],
     "htmlFields": ["description"],
     "templates": {
       "base": {
@@ -146,6 +146,12 @@
     "spell": {
       "templates": ["base"],
       "spellLevel": 1
-    }
+    },
+	"LewdMove": {
+		"templates": ["base"],
+		"skill1": "test",
+		"skill2": "test",
+		"bonus": 0
+	}
   }
 }

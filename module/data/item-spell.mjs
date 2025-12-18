@@ -14,8 +14,8 @@ export default class ExtricateSpell extends ExtricateItemBase {
       required: true,
       nullable: false,
       integer: true,
-      initial: 1,
-      min: 1,
+      initial: 0,
+      min: 0,
       max: 9,
     });
 

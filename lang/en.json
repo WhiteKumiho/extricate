@@ -1,29 +1,36 @@
 {
   "EXTRICATE": {
-    "Ability": {
-      "MET": { "long": "Mettle", "abbr": "MET" },
-      "AGI": { "long": "Agility", "abbr": "AGI" },
-      "INT": { "long": "Intellect", "abbr": "INT" },
-      "WIT": { "long": "Wit", "abbr": "WIT" },
+    "potentials": {
+      "mettle": { "long": "Mettle", "abbr": "MET" },
+      "agility": { "long": "Agility", "abbr": "AGI" },
+      "intellect": { "long": "Intellect", "abbr": "INT" },
+      "wit": { "long": "Wit", "abbr": "WIT" },
       "Wis": { "long": "Wisdom", "abbr": "wis" }
     },
 	"Skill": {
-		"Mel": { "long": "Melee", "abbr": "mel" },
-		"Ath": { "long": "Athletics", "abbr": "ath" },
-		"End": { "long": "Endurance", "abbr": "end" },
-		"Cha": { "long": "Charisma", "abbr": "cha" },
-		"Rng": { "long": "Ranged", "abbr": "rng" },
-		"Dft": { "long": "Deftness", "abbr": "dft" },
-		"Spd": { "long": "Speed", "abbr": "spd" },
-		"Rfx": { "long": "Reflexes", "abbr": "rfx" },
-		"Arc": { "long": "Arcana", "abbr": "arc" },
-		"Ins": { "long": "Insight", "abbr": "ins" },
-		"Sci": { "long": "Science", "abbr": "sci" },
-		"Ntr": { "long": "Nature", "abbr": "ntr" },
-		"Soc": { "long": "Social", "abbr": "soc" },
-		"Awr": { "long": "Awareness", "abbr": "awr" },
-		"Cun": { "long": "Cunning", "abbr": "cun" },
-		"Tnk": { "long": "Tinker", "abbr": "tnk" }
+		"melee": { "long": "Melee", "abbr": "mel" },
+		"athletics": { "long": "Athletics", "abbr": "ath" },
+		"endurance": { "long": "Endurance", "abbr": "end" },
+		"charisma": { "long": "Charisma", "abbr": "cha" },
+		"ranged": { "long": "Ranged", "abbr": "rng" },
+		"deftness": { "long": "Deftness", "abbr": "dft" },
+		"speed": { "long": "Speed", "abbr": "spd" },
+		"reflexes": { "long": "Reflexes", "abbr": "rfx" },
+		"arcana": { "long": "Arcana", "abbr": "arc" },
+		"insight": { "long": "Insight", "abbr": "ins" },
+		"science": { "long": "Science", "abbr": "sci" },
+		"nature": { "long": "Nature", "abbr": "ntr" },
+		"social": { "long": "Social", "abbr": "soc" },
+		"awareness": { "long": "Awareness", "abbr": "awr" },
+		"cunning": { "long": "Cunning", "abbr": "cun" },
+		"tinker": { "long": "Tinker", "abbr": "tnk" }
+	},
+	"LewdAbility": {
+		"Ero": { "long": "Eroticism", "abbr": "ero"},
+		"Tol": { "long": "Tolerance", "abbr": "tol"},
+		"All": { "long": "Allure", "abbr": "all"},
+		"Fer": { "long": "Fertility", "abbr": "fer"},
+		"Sex": { "long": "Sexuality", "abbr": "sex"}
 	},
     "SheetLabels": {
       "Actor": "Extricate Actor Sheet",
@@ -73,6 +80,17 @@
         "Description": "Description",
         "Effects": "Effects"
       },
+	  "Lewd": {
+		"FIELDS": {
+			"rollFormula": {"label": "Roll Formula"},
+			"skill1": {"label": "Skill 1"},
+			"skill2": {"label": "Skill 2"},
+			"bonus": {"label": "misc. bonus"},
+			"effect": {"label": "Effect"},
+			"description": {"label": "Description"}
+		},
+	    "addLewd": "Lewd Move"
+	  },
       "Gear": {
         "FIELDS": {
           "rollFormula": {"label": "Roll Formula"},
@@ -107,7 +125,8 @@
     "Item": {
       "gear": "Gear",
       "feature": "Feature",
-      "spell": "Spell"
+      "spell": "Spell",
+	  "LewdMove": "LewdMove"
     }
   }
 }

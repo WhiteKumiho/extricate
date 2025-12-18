@@ -13,8 +13,8 @@
               class='resource-label rollable flexlarge align-left'
               data-action='roll'
               data-roll='d20+@abilities.{{key}}.value'
-              data-label='{{localize (lookup @root.config.abilities key)}}'
-            >{{localize (lookup @root.config.abilities key)}}</label>
+              data-label='{{localize (lookup @root.config.potentials key)}}'
+            >{{localize (lookup @root.config.potentials key)}}</label>
             <input
               type='text'
               name='system.abilities.{{key}}.value'
@@ -124,8 +124,12 @@
               data-label='{{localize (lookup @root.config.skills.mettle key)}}'
             >{{localize (lookup @root.config.skills.mettle key)}}</label>
           </div>
+		  {{log "features skill" skill}}
+		  {{log "features key" key}}
         {{/each}}
+				{{log "button log system" system}}
 		{{#each system.agiSkills as |skill key|}} 
+		{{log "button this" this}}
           <div class='skills flexcol flex-group-center'>
             <input
               type='text'

@@ -37,7 +37,10 @@
         },
         "spell": {
             "htmlFields": ["description"]
-        }
+        },
+		"LewdMove": {
+			"htmlFields": ["description"]
+		}
     }
   },
   "flags": {

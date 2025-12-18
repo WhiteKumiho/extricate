@@ -37,14 +37,16 @@ export default class ExtricateGear extends ExtricateItemBase {
     });
 
     schema.formula = new fields.StringField({ blank: true });
-
+	console.log("gear schema", this)
     return schema;
   }
 
   prepareDerivedData() {
     // Build the formula dynamically using string interpolation
     const roll = this.roll;
+	console.log("gear prepared data", this)
 
     this.formula = `${roll.diceNum}${roll.diceSize}${roll.diceBonus}`;
+	console.log("this formula", this.formula)
   }
 }

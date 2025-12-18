@@ -23,7 +23,6 @@ export default class ExtricateActorBase extends foundry.abstract
 		value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0}),
 		max: new fields.NumberField({ ...requiredInteger, initial: 20}),
 	})
-	console.log(schema.health)
 	schema.bonus = new fields.SchemaField({
 		value: new fields.NumberField({ ...requiredInteger, initial: 0, min: 0})
 	})
