@@ -7,11 +7,12 @@
 <div class="lewd-background"></div>
 <div class="lewd-header">
 	{{#each system.lewdAbilities as |ability key|}}
-		<div class="lewd-ability flexrow flex-group-center">
+		<div class="lewd-ability flexrow flex-group-left">
 			<label
-			  class="resource-label rollable flexlarge align-left"
-			  data-action="roll"
-			  data-roll="d20+@lewdAbilities.{{key}}.value"
+			  class="lewd-btn pink-color rollable align-left"
+			  data-action="skillSelect"
+			  id="{{key}}"
+			  data-roll-type="skill"
 			  data-label="{{localize (lookup @root.config.lewdAbilities key)}}"
 			  >{{localize (lookup @root.config.lewdAbilities key)}}</label>
 			  <input
@@ -32,6 +33,7 @@
 	<li class='item flexrow items-header'>
 		<div>{{localize 'Name'}} </div>
 		<div>skills </div>
+		<div>bonus</div>
 		<div>
 		  {{#if @root.editable}}
             <a
@@ -76,23 +78,35 @@
 		<div>
 		  {{log "inspecting item" item}}
 		  {{log "outside select id" item.id}}
-		  <select data-item-id="{{this.id}}" name="system.skillRoll.skill1">
+		  <select 
+		  data-item-id="{{this.id}}" 
+		  name="system.skillRoll.skill1"
+		  class="lewd-dropdown"
+		  >
 			{{log "inside select id" item.id}}
 			{{selectOptions system.validSkills selected=item.system.skillRoll.skill1 localize=true}}
 		  </select>
 		</div>
 		<div>
-		  <select data-item-id="{{this.id}}" name="system.skillRoll.skill2">
+		  <select 
+		  data-item-id="{{this.id}}" 
+		  name="system.skillRoll.skill2"
+		  class="lewd-dropdown"
+		  >
 
 		  {{selectOptions system.validSkills selected=item.system.skillRoll.skill2 localize=true}}
 
 		  </select>
 		</div>
 
+		<input
+		  data-item-id="{{this.id}}"
+		  type="text"
+		  name="system.skillRoll.bonus"
+		  value="{{system.skillRoll.bonus}}"
+		  data-dtype="Number"
+		/>
 
-
-
-        <div class='item-formula item-prop'>{{item.system.skillFormula}}</div>
         <div class='item-controls'>
           <a
             class='item-control item-edit'

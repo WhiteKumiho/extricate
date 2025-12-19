@@ -1,6 +1,7 @@
 import ExtricateActorBase from './base-actor.mjs';
+import ExtricateCharacter from './actor-character.mjs';
 
-export default class ExtricateNPC extends ExtricateActorBase {
+export default class ExtricateNPC extends ExtricateCharacter {
   static LOCALIZATION_PREFIXES = [
     ...super.LOCALIZATION_PREFIXES,
     'EXTRICATE.Actor.NPC',

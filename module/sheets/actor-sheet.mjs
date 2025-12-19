@@ -89,7 +89,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
         options.parts.push('features', 'lewd', 'gear', 'spells', 'biography', 'effects');
         break;
       case 'npc':
-        options.parts.push('gear', 'effects');
+        options.parts.push('features', 'lewd', 'gear', 'spells', 'biography', 'effects');
         break;
     }
 
@@ -311,6 +311,17 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 	this._selectChangeHandler = async (event) => {
 		console.log("selectchange has triggered")
 		const targetEl = event.target
+		if ((targetEl instanceof HTMLInputElement) && targetEl.matches('input[data-item-id]')) {
+			const itemId = targetEl?.dataset?.itemId
+			const value = targetEl?.value
+			try {
+				console.log("item ID", itemId)
+				console.log("Name", targetEl.name)
+				await this.actor.updateEmbeddedDocuments("Item", [{ _id: itemId, [targetEl.name]: value}])
+			} catch (err) {
+				console.error("failed to update embedded item", err)
+			}
+		}
 		if (!(targetEl instanceof HTMLSelectElement) || !targetEl.matches('select[data-item-id]')) return
 
 		const itemId = targetEl?.dataset?.itemId

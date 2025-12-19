@@ -69,6 +69,17 @@
 	min-width: 5.1rem;
 }
 
+.lewd-btn {
+	padding: 5px 6px;
+	background: rgba(40, 32, 44, 0.616);
+	border-radius: 5px;
+	border: 3px solid rgba(40, 32, 44, 0.616);
+	text-align: left;
+	min-width: 5.1rem;
+	max-width: 5.1rem;
+	margin-right: 1rem;
+}
+
 .skill-btn:active {
 	background: rgba(105, 82, 116, 0.616);
 }
@@ -86,6 +97,10 @@
 	background: rgba(105, 82, 116, 0.616);
 }
 
+.roll-btn.active {
+	background: rgba(105, 82, 116, 0.616);
+}
+
 .item-list {
 	display: grid;
 	max-height: 600px;
@@ -95,6 +110,10 @@
 .item-box {
 	overflow: scroll;
 	height: 150px;
+}
+
+.lewd-dropdown {
+	min-width: 8rem;
 }
 
 .red-color {
@@ -136,5 +155,13 @@
 .yellow-color.active {
 	background: rgba(255, 239, 95, 0.616);
 	
+}
+
+.pink-color {
+	background: rgba(243, 106, 213, 0.625);
+}
+
+.pink-color.active {
+	background: rgba(255, 152, 233, 0.685);
 }
 
