@@ -32,6 +32,14 @@
 		"Fer": { "long": "Fertility", "abbr": "fer"},
 		"Sex": { "long": "Sexuality", "abbr": "sex"}
 	},
+	"LewdPoints" : {
+		"label": {"label": "mood"},
+		"hearts": {"label":"hearts"},
+		"clubs": {"label": "clubs"},
+		"spades": {"label": "spades"},
+		"diamonds": {"label": "diamonds"},
+		"any": {"label": "any"}
+	},
     "SheetLabels": {
       "Actor": "Extricate Actor Sheet",
       "Item": "Extricate Item Sheet"
@@ -87,7 +95,15 @@
 			"skill2": {"label": "Skill 2"},
 			"bonus": {"label": "misc. bonus"},
 			"effect": {"label": "Effect"},
-			"description": {"label": "Description"}
+			"description": {"label": "Description"},
+			"cost": {"label": "cost"},
+			"lewdCost": {
+				"hearts": {"label":"hearts"},
+				"clubs": {"label": "clubs"},
+				"spades": {"label": "spades"},
+				"diamonds": {"label": "diamonds"},
+				"any": {"label": "any"}
+			}
 		},
 	    "addLewd": "Lewd Move"
 	  },

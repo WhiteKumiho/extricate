@@ -10,12 +10,13 @@ export default class ExtricateCharacter extends ExtricateActorBase {
     const fields = foundry.data.fields;
     const requiredInteger = { required: true, nullable: false, integer: true };
     const schema = super.defineSchema();
-		const skillSets = CONFIG.EXTRICATE.skills
+	const skillSets = CONFIG.EXTRICATE.skills
 	let skills = {}
+	let lewdPointsName = game.i18n.localize("EXTRICATE.LewdPoints.label.label")
 	
 	//get each skill category
 	//this puts skill name objects in the skills variable.
-	for (let [key, value] of Object.entries(skillSets)) {
+/* 	for (let [key, value] of Object.entries(skillSets)) {
 		for (let [skill, localize] of Object.entries(value)) {
 			console.log("skill", skill)
 			console.log("localize", localize)
@@ -23,7 +24,7 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 			console.log(skills)
 		}
 	}
-
+ */
     schema.attributes = new fields.SchemaField({
       level: new fields.SchemaField({
         value: new fields.NumberField({ ...requiredInteger, initial: 1 }),
@@ -132,7 +133,29 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 		  return obj;
 		}, {})
 	  );    
+	  
+	  schema.lewdPoints = new fields.SchemaField( 
+		Object.keys(CONFIG.EXTRICATE.lewdPoints).reduce((obj, ability) => {
+		  obj[ability] = new fields.SchemaField({
+			value: new fields.NumberField({
+			  ...requiredInteger,
+			  initial: 0,
+			  min: 0,
+			}),
+			label: new fields.StringField({
+			  initial: ability,
+			}),
+		  });
+		  obj["label"] = new fields.SchemaField({
+			label: new fields.StringField({
+				initial: lewdPointsName
+			})
 
+		  })
+		  
+		  return obj;
+		}, {})
+	  );    
 /* 	  schema.testSchema = new fields.SchemaField(
 
 	  )

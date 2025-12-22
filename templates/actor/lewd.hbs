@@ -4,30 +4,54 @@
   data-group='primary'
   data-tab='lewdtab'
 >
-<div class="lewd-background"></div>
-<div class="lewd-header">
-	{{#each system.lewdAbilities as |ability key|}}
-		<div class="lewd-ability flexrow flex-group-left">
-			<label
-			  class="lewd-btn pink-color rollable align-left"
-			  data-action="skillSelect"
-			  id="{{key}}"
-			  data-roll-type="skill"
-			  data-label="{{localize (lookup @root.config.lewdAbilities key)}}"
-			  >{{localize (lookup @root.config.lewdAbilities key)}}</label>
-			  <input
-			    type="text"
-				name="system.lewdAbilities.{{key}}.value"
-				value="{{ability.value}}"
-				class="ability-score"
-				data-dtype="Number"
-			/>	
-		</div>
-	{{/each}}
-	<div class="ability-box">
-		{{log "what is this" this}}
-	</div>
+<div class="flexrow">
+	<div class="lewd-background">lewd skills</div>
+	<div class="flex-group-right">{{system.lewdPoints.label.label}}</div>
+</div>
+<div class="grid-container">
+	<div class="lewd-header grid-5row">
+		{{#each system.lewdAbilities as |ability key|}}
+			<div class="lewd-ability flexrow flex-group-left">
+				<label
+				class="lewd-btn pink-color rollable align-left"
+				data-action="skillSelect"
+				id="{{key}}"
+				data-roll-type="skill"
+				data-label="{{localize (lookup @root.config.lewdAbilities key)}}"
+				>{{localize (lookup @root.config.lewdAbilities key)}}
+				</label>
+				<input
+					type="text"
+					name="system.lewdAbilities.{{key}}.value"
+					value="{{ability.value}}"
+					class="ability-score"
+					data-dtype="Number"
+				/>	
+			</div>
+		{{/each}}
+		{{#each system.lewdPoints as |object typeName|}}
+		{{log object}}
+			{{#unless (eq typeName "label")}}
+				<div class="flexrow flex-group-right">
+					<label class= "flexlarge item">
+						<img 
+						src="systems/extricate/assets/icons/{{typeName}}-icon.svg"
+						height="40"
+						width="40"
+						/>
+					</label>
+					<input 
+					type="text"
+					name="system.lewdPoints.{{typeName}}.value"
+					value="{{object.value}}"
+					class="ability-score"
+					data-dtype="Number"
+					/>
+				</div>
+			{{/unless}}
+		{{/each}}
 
+			
 </div>
   <ol class='items-list'>
 	<li class='item flexrow items-header'>
@@ -130,10 +154,4 @@
 
   </ol>
   {{! Editors must receive enriched text data from getData to properly handle rolls, UUID links, etc. }}
-  {{#if editable}} 
-    <prose-mirror name="system.lewdtab" data-document-u-u-i-d="{{actor.uuid}}" value="{{system.lewdtab}}" collaborate="true" toggled="true">
-      {{{enrichedBiography}}}
-    </prose-mirror>
-  {{else}} {{{enrichedBiography}}}
-  {{/if}}
 </section>

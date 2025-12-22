@@ -129,8 +129,8 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 
   /** @override */
   async _preparePartContext(partId, context) {
-	console.log("context", context)
-	console.log("partid", partId)
+	console.log("actor context", context)
+	console.log("actor partid", partId)
 	
     switch (partId) {
       case 'features':
@@ -140,6 +140,7 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
         context.tab = context.tabs[partId];
         break;
       case 'biography':
+		console.log("biography is running")
         context.tab = context.tabs[partId];
         // Enrich biography info for display
         // Enrichment turns text like `[[/r 1d20]]` into buttons

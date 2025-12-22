@@ -95,6 +95,26 @@ export default class ExtricateLewdMove extends ExtricateItemBase {
 
 	schema.skillFormula = new fields.StringField({ blank: true })
 
+	schema.lewdCost = new fields.SchemaField(
+		Object.keys(CONFIG.EXTRICATE.lewdCost).reduce((obj, costType) => {
+			console.log(CONFIG.EXTRICATE.lewdCost)
+			console.log("obj", obj)
+			console.log(costType)
+			obj[costType] = new fields.SchemaField({
+				label: new fields.StringField({
+					initial: costType
+				}),
+
+				value: new fields.NumberField({
+					...requiredInteger,
+					initial: 0,
+					min: 0,
+				}),
+			})
+			return obj
+		}, {})
+	)
+
 	schema.damageRoll = new fields.SchemaField({
 		diceNum: new fields.NumberField({
 		  ...requiredInteger,
@@ -109,7 +129,7 @@ export default class ExtricateLewdMove extends ExtricateItemBase {
 
 	schema.damageFormula = new fields.StringField({ blank: true })
 	console.log("lewd schema", this)
-	
+
 
 	return schema
   }

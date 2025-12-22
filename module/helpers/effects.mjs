@@ -23,6 +23,8 @@ export function prepareActiveEffectCategories(effects) {
     },
   };
 
+  console.log("Effect localize test", game.i18n.localize('EXTRICATE.Effect.Temporary'))
+
   // Iterate over active effects, classifying them into categories
   for (const e of effects) {
     if (e.disabled) categories.inactive.effects.push(e);

@@ -517,6 +517,19 @@
   padding: 0;
 }
 
+.grid-container {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: auto auto auto auto auto;
+}
+
+.grid-5row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: auto auto auto auto auto;
+  grid-column: 1/-1;
+}
+
 .skill-value {
   min-width: 2rem;
   max-width: 2rem;
@@ -578,6 +591,10 @@
 .item-box {
   overflow: scroll;
   height: 150px;
+}
+
+.stat-label {
+  margin: 0.8rem 0.8rem;
 }
 
 .lewd-dropdown {

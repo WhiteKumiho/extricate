@@ -55,6 +55,9 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
     attributesSpell: {
       template: 'systems/extricate/templates/item/attribute-parts/spell.hbs',
     },
+	attributesLewd: {
+	  template: 'systems/extricate/templates/item/attribute-parts/lewd.hbs',
+	},
     effects: {
       template: 'systems/extricate/templates/item/effects.hbs',
     },
@@ -64,22 +67,25 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
   _configureRenderOptions(options) {
     super._configureRenderOptions(options);
     // Not all parts always render
-    options.parts = ['header', 'tabs', 'description'];
+    options.parts = ['header', 'tabs'];
     // Don't show the other tabs if only limited view
     if (this.document.limited) return;
     // Control which parts show based on document subtype
+	console.log("options", options)
     switch (this.document.type) {
       case 'feature':
-        options.parts.push('attributesFeature', 'effects');
+        options.parts.push('description', 'attributesFeature', 'effects');
         break;
-	  case 'lewd':
+	  case 'LewdMove':
 		options.parts.push('attributesLewd')
+		//set the first open tab for lewdmoves to be 'attrribute'
+		this.tabGroups['primary'] = 'attributes'
 		break
       case 'gear':
-        options.parts.push('attributesGear');
+        options.parts.push('description', 'attributesGear');
         break;
       case 'spell':
-        options.parts.push('attributesSpell');
+        options.parts.push('description', 'attributesSpell');
         break;
     }
   }
@@ -112,16 +118,28 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
 
   /** @override */
   async _preparePartContext(partId, context) {
-	console.log("partID", partId)
     switch (partId) {
       case 'attributesFeature':
       case 'attributesGear':
       case 'attributesSpell':
 	  case 'attributesLewd':
         // Necessary for preserving active tab on re-render
-        context.tab = context.tabs[partId];
-        break;
+
+     /*    context.tab = context.tabs[partId];
+		context.enrichedDescription = await TextEditor.enrichHTML(
+			this.item.system.description,
+			{
+			  // Whether to show secret blocks in the finished html
+			  secrets: this.document.isOwner,
+			  // Data to fill in for inline rolls
+			  rollData: this.item.getRollData(),
+			  // Relative UUID resolution
+			  relativeTo: this.item,
+			}
+		  ); */
+        /* break; */
       case 'description':
+		console.log("prepareContext", context)
         context.tab = context.tabs[partId];
         // Enrich description info for display
         // Enrichment turns text like `[[/r 1d20]]` into buttons
@@ -159,6 +177,9 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
     // If you have sub-tabs this is necessary to change
     const tabGroup = 'primary';
     // Default tab for first time it's rendered this session
+	console.log("Get tabs", parts)
+	console.log(this)
+	console.log(this.tabGroups)
     if (!this.tabGroups[tabGroup]) this.tabGroups[tabGroup] = 'description';
     return parts.reduce((tabs, partId) => {
       const tab = {
@@ -254,6 +275,7 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
    * @protected
    */
   static async _viewEffect(event, target) {
+	console.log("embedded document sheet render")
     const effect = this._getEffect(target);
     effect.sheet.render(true);
   }

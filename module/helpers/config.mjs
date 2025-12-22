@@ -116,3 +116,21 @@ EXTRICATE.lewdAbilitiesAbbreviations = {
 	fertility: "EXTRICATE.LewdAbility.Fer.abbr",
 	sexuality: "EXTRICATE.LewdAbility.Sex.abbr",
 }
+
+EXTRICATE.lewdCost = {
+	hearts: "EXTRICATE.Item.Lewd.FIELDS.lewdCost.hearts.label",
+	clubs: "EXTRICATE.Item.Lewd.FIELDS.lewdCost.clubs.label",
+	spades: "EXTRICATE.Item.Lewd.FIELDS.lewdCost.spades.label",
+	diamonds: "EXTRICATE.Item.Lewd.FIELDS.lewdCost.diamonds.label",
+	any: "EXTRICATE.Item.Lewd.FIELDS.lewdCost.any.label"
+}
+
+EXTRICATE.lewdPoints = {
+	label: "EXTRICATE.LewdPoints.label.label",
+	hearts: "EXTRICATE.LewdPoints.hearts.label",
+	clubs: "EXTRICATE.LewdPoints.clubs.label",
+	spades: "EXTRICATE.LewdPoints.spades.label",
+	diamonds: "EXTRICATE.LewdPoints.diamonds.label",
+	any: "EXTRICATE.LewdPoints.any.label"
+}
+

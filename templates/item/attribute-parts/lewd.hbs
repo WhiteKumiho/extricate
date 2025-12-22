@@ -1,18 +1,5 @@
-{{! Biography Tab }}
+{{! Attributes Tab }}
 <section
-  class='tab biography {{tab.cssClass}}'
-  data-group='primary'
-  data-tab='biography'
->
-  {{! Editors must receive enriched text data from getData to properly handle rolls, UUID links, etc. }}
-  {{#if editable}} 
-  {{log "thehrtehnwehwhwehgbw" actor.uuid}}
-    <prose-mirror name="system.biography" data-document-u-u-i-d="{{actor.uuid}}" value="{{system.biography}}" collaborate="true" toggled="true">
-      {{{enrichedBiography}}}
-    </prose-mirror>
-  {{else}} {{{enrichedBiography}}}
-  {{/if}}
-  <section
   class='tab attributes {{tab.cssClass}}'
   data-group='primary'
   data-tab='attributes'
@@ -47,6 +34,18 @@
 	  {{/each}}
     </div>
   </div>
-
-</section>
+  <section>
+		{{! Editors must receive enriched text data from getData to properly handle rolls, UUID links, etc. }}
+		{{#if editable}} 
+			<prose-mirror 
+			name="system.description" 
+			data-document-u-u-i-d="Item.{{item.id}}" 
+			value="{{system.description}}"
+			toggled="true"
+			>
+			{{{enrichedDescription}}}
+			</prose-mirror>
+		{{else}} {{{enrichedDescription}}}
+		{{/if}}
+	</section>
 </section>
