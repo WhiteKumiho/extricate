@@ -74,7 +74,7 @@ Hooks.once('init', function () {
     makeDefault: true,
     label: 'EXTRICATE.SheetLabels.Actor',
   });
-  console.log("actors registered sheet.")
+  console.log("actors registered")
   Items.unregisterSheet('core', ItemSheet);
   Items.registerSheet('extricate', ExtricateItemSheet, {
     makeDefault: true,

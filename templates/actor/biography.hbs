@@ -12,41 +12,4 @@
     </prose-mirror>
   {{else}} {{{enrichedBiography}}}
   {{/if}}
-  <section
-  class='tab attributes {{tab.cssClass}}'
-  data-group='primary'
-  data-tab='attributes'
->
-  {{! As you add new fields, add them in here! }}
-  <div class='resource'>
-	{{log "lwed part system" system}}
-    <label class='resource-label align-center'>{{localize 'EXTRICATE.Item.Lewd.FIELDS.cost.label'}}</label>
-	
-    <div class='grid grid-5col'>
-	  {{#each system.lewdCost as |costName key|}}
-		<div class='grid-span-1'>
-			<label class='resource-label align-center'>
-				{{localize (lookup @root.config.lewdCost key)}}
-			</label>
-		<img 
-	  src="systems/extricate/assets/anvil-impact.png"
-	  height="50"
-	  width="50"
-	  />
-        <input
-          type='text'
-          name='system.lewdCost.{{key}}.value'
-          value='{{costName.value}}'
-          data-dtype='Number'
-        />
-		{{log key this.value}}
-		
-      </div>
-		{{log costName}}
-		{{log key}}
-	  {{/each}}
-    </div>
-  </div>
-
-</section>
 </section>

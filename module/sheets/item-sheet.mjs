@@ -23,6 +23,7 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
       createDoc: this._createEffect,
       deleteDoc: this._deleteEffect,
       toggleEffect: this._toggleEffect,
+	  useLewdSkill: this.useLewdSkill,
     },
     form: {
       submitOnChange: true,
@@ -274,9 +275,11 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
    * @param {HTMLElement} target   The capturing HTML element which defined a [data-action]
    * @protected
    */
+  //issue: this may need to be fixed
   static async _viewEffect(event, target) {
 	console.log("embedded document sheet render")
     const effect = this._getEffect(target);
+	console.log(effect)
     effect.sheet.render(true);
   }
 
@@ -567,5 +570,68 @@ export class ExtricateItemSheet extends api.HandlebarsApplicationMixin(
       };
       return new DragDrop(d);
     });
+  }
+
+static async useLewdSkill(event, target) {
+	console.log("It works?", target)
+	console.log(event)
+	console.log(this)
+	event.preventDefault()
+	const dataset = target.dataset
+	console.log(dataset)
+
+	const move = this._getEffect(target)
+	const moveCost = this.item.system.lewdCost
+	const actorPoints = this.actor.system.lewdPoints
+	let iconCost = ''
+	let typePath = ''
+	let newValue = ''
+	let imgFilePath = ''
+
+	console.log(move)
+	console.log("actor", this.actor)
+	console.log("item", this.item)
+	console.log("movecost", moveCost)
+	console.log(actorPoints["hearts"]["value"])
+
+	//check if item cost > actor resources
+	//turn this into a function
+	for (let [type, object] of Object.entries(moveCost)) {
+		console.log("Object", object)
+		console.log("type", type)
+		console.log("movecost", moveCost)
+		console.log("actorpoints", actorPoints)
+		if (object["value"] > actorPoints[type]["value"] && type != "any") {
+			console.log('2expensive')
+			return
+		}
+	}
+
+	for (let [type, object] of Object.entries(moveCost)) {
+		//actorPoints[type].value
+		typePath = `system.lewdPoints.${type}.value`
+		newValue = actorPoints[type].value - moveCost[type].value
+		imgFilePath = `"systems/extricate/assets/icons/${type}-icon.svg"`
+		for (let i = 0; i < moveCost[type].value; i++) {
+			iconCost += `<img src=${imgFilePath} height="20" width="20" />`
+		}
+		
+		await this.actor.update({[typePath]: newValue})
+	}
+
+
+	const speaker = ChatMessage.getSpeaker({ actor: this.actor})
+	const rollMode = game.settings.get('core', 'rollMode')
+	//addcost to label probably
+	const label = `[${this.item.type}] ${this.item.name} ${iconCost}`
+	console.log("an update function", this.document)
+	this.actor.sheet.render(true)
+
+	ChatMessage.create({
+		speaker: speaker,
+		rollMode: "roll mode:" + rollMode,
+		flavor: "Label:" + label,
+		content: this.item.system.description ?? '',
+	})
   }
 }

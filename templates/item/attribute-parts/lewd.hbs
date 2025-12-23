@@ -15,11 +15,22 @@
 			<label class='resource-label align-center'>
 				{{localize (lookup @root.config.lewdCost key)}}
 			</label>
-		<img 
-	  src="systems/extricate/assets/anvil-impact.png"
-	  height="50"
-	  width="50"
-	  />
+			{{#unless (eq key "any")}}
+				<img 
+					class="icon"
+					src="systems/extricate/assets/icons/{{key}}-icon.svg"
+					height="50"
+					width="50"
+					/>
+			{{/unless}}
+			{{#if (eq key "any")}}
+				<img 
+					class="icon"
+					src="systems/extricate/assets/icons/{{key}}-icon.png"
+					height="50"
+					width="50"
+				/>
+			{{/if}}
         <input
           type='text'
           name='system.lewdCost.{{key}}.value'
@@ -34,6 +45,12 @@
 	  {{/each}}
     </div>
   </div>
+  <label 
+    class="lewd-btn pink-color rollable"
+	data-action="useLewdSkill"
+	data-roll-type="item"
+	data-label="translation needed"
+  >use skill(translate)</label>
   <section>
 		{{! Editors must receive enriched text data from getData to properly handle rolls, UUID links, etc. }}
 		{{#if editable}} 

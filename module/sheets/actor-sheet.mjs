@@ -140,7 +140,6 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
         context.tab = context.tabs[partId];
         break;
       case 'biography':
-		console.log("biography is running")
         context.tab = context.tabs[partId];
         // Enrich biography info for display
         // Enrichment turns text like `[[/r 1d20]]` into buttons
@@ -338,7 +337,8 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 		}
 	}
 
-	html.addEventListener('change', this._selectChangeHandler)
+	//not needed?
+	/* html.addEventListener('change', this._selectChangeHandler) */
 
 	//render skill buttons already selected
 	//doesn't work
@@ -500,26 +500,36 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
   static async _onRoll(event, target) {
     event.preventDefault();
     const dataset = target.dataset;
+	//dataset is all HTML properties prefixed with "data"
+	console.log(target)
 	console.log("early dataset", dataset)
+	console.log("this", this)
 
     // Handle item rolls.
-    switch (dataset.rollType) {
+/*     switch (dataset.rollType) {
       case 'item':
 		console.log("The item case is activated")
         const item = this._getEmbeddedDocument(target);
 		let test = target.closest('li[data-document-class]')
 		console.log("this is test", test)
         if (item) return item.roll();
-    }
+    } */
 
-    // Handle rolls that supply the formula directly.
+    
 	//the roll constructor needs the roll formula and some data object from which to 
 	//retrieve any variable found in the roll formula
-	//refactor this. change skillButtons to skills? 
-	//then change skill1/2 to skills and use skills[0] and skills[1]
 
 	//ROLL button
 	switch (dataset.rollType) {
+		// Handle item rolls.
+		case 'item':
+			console.log(this)
+			console.log("The item case is activated")
+			const item = this._getEmbeddedDocument(target);
+			let test = target.closest('li[data-document-class]')
+			console.log("this is test", test)
+			if (item) return item.roll();
+
 		case 'skill':
 			let skills = this.actor.system.selectedSkill
 
@@ -555,8 +565,9 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 
 			return roll
 	}
-
+	// Handle rolls that supply the formula directly?
     if (dataset.roll) {
+	  console.log("actor-sheet.mjs third roll option activates")
       let label = dataset.label ? `[ability] ${dataset.label}` : '';
       let roll = new Roll(dataset.roll, this.actor.getRollData());
       await roll.toMessage({
@@ -618,7 +629,9 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
   _getEmbeddedDocument(target) {
 	console.log("getembeddedlog", target)
     const docRow = target.closest('li[data-document-class]');
+	console.log("docRow", docRow)
     if (docRow.dataset.documentClass === 'Item') {
+		console.log("this.actor", this.actor.items.get(docRow.dataset.itemId))
       return this.actor.items.get(docRow.dataset.itemId);
     } else if (docRow.dataset.documentClass === 'ActiveEffect') {
       const parent =

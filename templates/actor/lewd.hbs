@@ -4,6 +4,7 @@
   data-group='primary'
   data-tab='lewdtab'
 >
+{{log "this lewd.hbs sheet" this}}
 <div class="flexrow">
 	<div class="lewd-background">lewd skills</div>
 	<div class="flex-group-right">{{system.lewdPoints.label.label}}</div>
@@ -34,11 +35,22 @@
 			{{#unless (eq typeName "label")}}
 				<div class="flexrow flex-group-right">
 					<label class= "flexlarge item">
+						{{#unless (eq typeName "any")}}
 						<img 
+						class="icon"
 						src="systems/extricate/assets/icons/{{typeName}}-icon.svg"
 						height="40"
 						width="40"
 						/>
+						{{/unless}}
+						{{#if (eq typeName "any")}}
+						<img 
+						class="icon"
+						src="systems/extricate/assets/icons/{{typeName}}-icon.png"
+						height="40"
+						width="40"
+						/>
+						{{/if}}
 					</label>
 					<input 
 					type="text"
