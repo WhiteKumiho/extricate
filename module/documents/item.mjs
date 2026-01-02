@@ -65,9 +65,13 @@ export class ExtricateItem extends Item {
       const roll = new Roll(rollData.formula, rollData.actor);
       // If you need to store the value first, uncomment the next line.
       // const result = await roll.evaluate();
-	  if (this.system.skillRoll.skill1 && this.system.skillRoll.skill2) {
-		label2 = `: ${this.system.skillRoll.skill1}+${this.system.skillRoll.skill2}`
+	  //please fix this
+	  if (this.system.skillRoll){
+		if (this.system.skillRoll.skill1 && this.system.skillRoll.skill2) {
+			label2 = `: ${this.system.skillRoll.skill1}+${this.system.skillRoll.skill2}`
+		  }
 	  }
+	  
       roll.toMessage({
         speaker: speaker,
         rollMode: rollMode,
