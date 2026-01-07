@@ -587,6 +587,7 @@ static async useLewdSkill(event, target) {
 	let typePath = ''
 	let newValue = ''
 	let imgFilePath = ''
+	let extension = ''
 
 	console.log(move)
 	console.log("actor", this.actor)
@@ -602,7 +603,7 @@ static async useLewdSkill(event, target) {
 		console.log("movecost", moveCost)
 		console.log("actorpoints", actorPoints)
 		if (object["value"] > actorPoints[type]["value"] && type != "any") {
-			console.log('2expensive')
+			ui.notifications.error("not in the mood")
 			return
 		}
 	}
@@ -611,7 +612,10 @@ static async useLewdSkill(event, target) {
 		//actorPoints[type].value
 		typePath = `system.lewdPoints.${type}.value`
 		newValue = actorPoints[type].value - moveCost[type].value
-		imgFilePath = `"systems/extricate/assets/icons/${type}-icon.svg"`
+		extension = (type === 'any') ? '.png' : '.svg'
+		imgFilePath = 
+		`"systems/extricate/assets/icons/${type}-icon${extension}"` 
+		console.log("image file path", imgFilePath)
 		for (let i = 0; i < moveCost[type].value; i++) {
 			iconCost += `<img src=${imgFilePath} height="20" width="20" />`
 		}
@@ -630,7 +634,7 @@ static async useLewdSkill(event, target) {
 	ChatMessage.create({
 		speaker: speaker,
 		rollMode: "roll mode:" + rollMode,
-		flavor: "Label:" + label,
+		flavor: label,
 		content: this.item.system.description ?? '',
 	})
   }

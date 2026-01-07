@@ -57,7 +57,6 @@ export default class ExtricateLewdMove extends ExtricateItemBase {
 	"description": {"label": "Description"} */
 
 	schema.effect = new fields.StringField ({ initial: 'effect'})
-	console.log("ooooooooooooooooooooo",skills)
 
  	schema.validSkills = new fields.SchemaField(
 		Object.keys(skills).reduce((obj, skill) => {

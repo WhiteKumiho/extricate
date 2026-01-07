@@ -140,17 +140,17 @@ export default class ExtricateCharacter extends ExtricateActorBase {
 			value: new fields.NumberField({
 			  ...requiredInteger,
 			  initial: 0,
-			  min: 0,
+			  ...(ability === 'any') ? {} : {min: 0}
 			}),
 			label: new fields.StringField({
 			  initial: ability,
 			}),
 		  });
+		  
 		  obj["label"] = new fields.SchemaField({
 			label: new fields.StringField({
 				initial: lewdPointsName
 			})
-
 		  })
 		  
 		  return obj;

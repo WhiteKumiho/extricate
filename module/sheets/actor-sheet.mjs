@@ -306,8 +306,11 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 	super._onRender?.(context, options)
 	const html = this.element
 
+	console.log("is this running?)")
+	//If the event listener exists on sheet render, remove it.
 	if(this._selectChangeHandler) html.removeEventListener('change', this._selectChangeHandler)
 	
+	//this is the event listener
 	this._selectChangeHandler = async (event) => {
 		console.log("selectchange has triggered")
 		const targetEl = event.target
@@ -337,8 +340,8 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
 		}
 	}
 
-	//not needed?
-	/* html.addEventListener('change', this._selectChangeHandler) */
+	//this actually adds the event listener
+	html.addEventListener('change', this._selectChangeHandler)
 
 	//render skill buttons already selected
 	//doesn't work
@@ -953,19 +956,11 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
    */
   async _processSubmitData(event, form, submitData) {
     const overrides = foundry.utils.flattenObject(this.actor.overrides);
-	console.log("this", this)
-	console.log("event target", event.target.dataset.itemId)
-	console.log("overrides", this.actor.overrides)
-	console.log("Actual overrides result", overrides)
-	console.log("event", event)
-	console.log("Form", form)
-	console.log("submitData", submitData)
     for (let k of Object.keys(overrides)) {
 		console.log("there's no keys?", k)
 		delete submitData[k]
 
 	}
-	console.log("overrides", this.actor.overrides)
     await this.document.update(submitData);
   }
 
@@ -975,7 +970,6 @@ export class ExtricateActorSheet extends api.HandlebarsApplicationMixin(
    */
   #disableOverrides() {
     const flatOverrides = foundry.utils.flattenObject(this.actor.overrides);
-	console.log("flat overrides", flatOverrides)
     for (const override of Object.keys(flatOverrides)) {
       const input = this.element.querySelector(`[name="${override}"]`);
       if (input) {
